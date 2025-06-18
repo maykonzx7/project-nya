@@ -9,10 +9,24 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    height: 100%;
   }
   
   body {
     @apply bg-rosa-claro text-gray-800 font-sans;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  #hero {
+    @apply relative;
+    min-height: 100vh;
+  }
+
+  #floating-decorations {
+    @apply absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden;
+    z-index: 15;
   }
 }
 
@@ -23,5 +37,173 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  /* Animação de flip para livros */
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+  
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  
+  .transform-rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+
+  /* Animações para hero section - CORRIGIDAS */
+  @keyframes ping-slow {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+  }
+
+  @keyframes ping-slower {
+    0% { transform: scale(1); opacity: 0.7; }
+    100% { transform: scale(3); opacity: 0; }
+  }
+
+  .animate-ping-slow {
+    animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  .animate-ping-slower {
+    animation: ping-slower 4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) translateX(0) rotate(0); }
+    50% { transform: translateY(-20px) translateX(10px) rotate(5deg); }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+    position: absolute;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+
+  /* Animação de levitação para livros */
+  @keyframes book-float {
+    0%, 100% { transform: translateY(0) rotateZ(0); }
+    50% { transform: translateY(-10px) rotateZ(1deg); }
+  }
+
+  .animate-book-float {
+    animation: book-float 4s ease-in-out infinite;
+  }
+
+  /* Easing personalizado */
+  .ease-expo-out {
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Textura de papel para livros */
+  .paper-texture {
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC45Ii8+PHBhdGggZD0iTTAgMEwxMDAgMTAwIiBzdHJva2U9IiNmZmQ3ZDciIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2Utb3BhY2l0eT0iMC4zIi8+PC9zdmc+");
+  }
+
+  /* Efeito de pulso para estrela */
+  @keyframes pulse-star {
+    0% { transform: scale(1) rotate(0); }
+    50% { transform: scale(1.1) rotate(15deg); }
+    100% { transform: scale(1) rotate(0); }
+  }
+
+  .animate-pulse-star {
+    animation: pulse-star 2s ease-in-out infinite;
+  }
+
+  /* Animação de digitação */
+  @keyframes blink-caret {
+    from, to { opacity: 0; }
+    50% { opacity: 1; }
+  }
+
+  .typewriter-caret::after {
+    content: "|";
+    animation: blink-caret 0.75s step-end infinite;
+  }
+}
+
+/* Componentes personalizados */
+@layer components {
+  .glass-effect {
+    @apply bg-white/70 backdrop-blur-sm border border-white/50;
+    box-shadow: 0 8px 32px rgba(251, 207, 232, 0.2);
+  }
+
+  .book-perspective {
+    perspective: 1000px;
+  }
+
+  .hero-particle-canvas {
+    @apply absolute inset-0 w-full h-full pointer-events-none;
+  }
+
+  /* Estilo para elementos flutuantes */
+  .floating-element {
+    @apply absolute;
+    will-change: transform;
+    pointer-events: none;
+  }
+}
+
+/* Estilos para scroll suave */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  .animate-float,
+  .animate-ping-slow,
+  .animate-ping-slower,
+  .animate-spin,
+  .animate-book-float,
+  .animate-pulse-star {
+    animation: none !important;
+  }
+}
+
+@layer base {
+  .floating-element:nth-child(1) { top: 10%; left: 5%; }
+  .floating-element:nth-child(2) { top: 20%; right: 15%; }
+  .floating-element:nth-child(3) { top: 40%; left: 20%; }
+  .floating-element:nth-child(4) { bottom: 30%; right: 10%; }
+  .floating-element:nth-child(5) { bottom: 20%; left: 15%; }
+  .floating-element:nth-child(6) { top: 15%; right: 5%; }
+  .floating-element:nth-child(7) { bottom: 10%; left: 25%; }
+  .floating-element:nth-child(8) { top: 30%; right: 25%; }
+  .floating-element:nth-child(9) { bottom: 40%; left: 10%; }
+  .floating-element:nth-child(10) { top: 50%; right: 30%; }
+}
+
+@layer base {
+  html, body {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    overflow-x: hidden;
+    /* Força a barra de scroll sempre visível para evitar saltos */
+    overflow-y: scroll;
+  }
+  
+  /* Suaviza a transição para o topo */
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Adiciona transição de scroll suave */
+@layer utilities {
+  .smooth-scroll {
+    scroll-behavior: smooth;
   }
 }

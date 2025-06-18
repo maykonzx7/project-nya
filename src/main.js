@@ -2,20 +2,26 @@ import "./style.css";
 import "./styles/components.css";
 import "./styles/animations.css";
 import { HeroSection } from "./components/Hero";
-import javascriptLogo from "./javascript.svg";
-import viteLogo from "/vite.svg";
-import { setupCounter } from "./counter.js";
+import { renderBookSection } from "./components/BookSection";
+
+if (history.scrollRestoration) {
+  history.scrollRestoration = "manual";
+}
+
+window.addEventListener("load", () => {
+  window.scrollTo(0, 0);
+});
 
 document.querySelector("#app").innerHTML = `
   <main class="w-full min-h-screen">
     <section id="hero" class="relative w-full min-h-screen flex items-center justify-center overflow-hidden"></section>
-    <!-- Outras seções serão adicionadas aqui -->
+    <section id="book-section"></section>
+    <!-- Adicione outras seções aqui -->
   </main>
 `;
 
-setupCounter(document.querySelector("#counter"));
-
-// Inicializa a seção Hero
 document.addEventListener("DOMContentLoaded", () => {
   new HeroSection();
+
+  renderBookSection();
 });
