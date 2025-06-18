@@ -1,13 +1,369 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cantinho Rosa-Clarinho</title>
+  <meta name="description" content="Meu cantinho pessoal cheio de literatura, música e nostalgia">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'rosa-claro': '#FFF0F5',
+            'cinza-suave': '#A7A7A7',
+          },
+          fontFamily: {
+            'serif': ['Playfair Display', 'serif'],
+            'sans': ['Inter', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  
+  <!-- Custom Styles -->
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      background-color: #FFF0F5;
+      color: #374151;
+      font-family: 'Inter', 'Roboto', sans-serif;
+    }
+    
+    .text-gradient {
+      background: linear-gradient(135deg, #ec4899, #be185d, #f97316);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% 200%;
+      animation: gradientShift 4s ease-in-out infinite;
+    }
+    
+    @keyframes gradientShift {
+      0%, 100% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+    
+    .particle {
+      position: absolute;
+      background: radial-gradient(circle, rgba(236, 72, 153, 0.8), rgba(190, 24, 93, 0.4));
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: bounce 2s infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateX(-50%) translateY(0);
+      }
+      40% {
+        transform: translateX(-50%) translateY(-10px);
+      }
+      60% {
+        transform: translateX(-50%) translateY(-5px);
+      }
+    }
+    
+    .typing-cursor::after {
+      content: '|';
+      animation: blink 1s infinite;
+      color: #ec4899;
+    }
+    
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+    
+    .hero-overlay {
+      background: linear-gradient(45deg, 
+        rgba(255, 240, 245, 0.9) 0%,
+        rgba(255, 240, 245, 0.8) 50%,
+        rgba(255, 240, 245, 0.9) 100%);
+    }
+    
+    .glass-effect {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.5rem !important;
+        line-height: 1.2 !important;
+      }
+      
+      .hero-subtitle {
+        font-size: 1.1rem !important;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 2rem !important;
+      }
+      
+      .hero-subtitle {
+        font-size: 1rem !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Hero Section -->
+  <section id="hero" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+    <!-- Particles Canvas -->
+    <canvas id="particles" class="absolute inset-0 w-full h-full z-0"></canvas>
+    
+    <!-- Hero Overlay -->
+    <div class="hero-overlay absolute inset-0 z-10"></div>
+    
+    <!-- Main Content -->
+    <div class="relative z-20 text-center px-4 max-w-4xl mx-auto">
+      <!-- Main Title with Typewriter Effect -->
+      <h1 id="main-title" class="hero-title text-6xl md:text-7xl lg:text-8xl font-serif text-gradient mb-6 typing-cursor opacity-0">
+        <!-- Texto será inserido via JavaScript -->
+      </h1>
+      
+      <!-- Subtitle -->
+      <p id="subtitle" class="hero-subtitle text-xl md:text-2xl text-cinza-suave mb-8 opacity-0">
+        Um cantinho especial com meus gostos, livros, músicas e memórias.
+      </p>
+      
+      <!-- Decorative Elements -->
+      <div id="decorative-elements" class="flex justify-center items-center gap-4 mb-12 opacity-0">
+        <div class="w-16 h-px bg-gradient-to-r from-transparent via-pink-400 to-transparent"></div>
+        <span class="text-2xl">🌸</span>
+        <div class="w-16 h-px bg-gradient-to-r from-transparent via-pink-400 to-transparent"></div>
+      </div>
+      
+      <!-- Call to Action -->
+      <div id="cta-button" class="opacity-0">
+        <button onclick="scrollToNextSection()" 
+                class="glass-effect px-8 py-4 rounded-full text-pink-600 font-medium hover:bg-pink-50 transition-all duration-300 transform hover:scale-105 shadow-lg">
+          Cantinho Nya
+        </button>
+      </div>
+    </div>
+    
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator z-20">
+      <div class="w-6 h-10 border-2 border-pink-400 rounded-full flex justify-center">
+        <div class="w-1 h-3 bg-pink-400 rounded-full mt-2 animate-pulse"></div>
+      </div>
+      <p class="text-xs text-cinza-suave mt-2 font-medium">Role para baixo</p>
+    </div>
+  </section>
+  
+  <!-- Next Section (Placeholder) -->
+  <section id="next-section" class="min-h-screen flex items-center justify-center bg-white">
+    <div class="text-center">
+      <h2 class="text-4xl font-serif text-gray-800 mb-4">Próxima Seção</h2>
+      <p class="text-gray-600">Aqui virão os livros, música e memórias...</p>
+    </div>
+  </section>
+
+  <script>
+    // Typewriter Effect Implementation
+    class TypeWriter {
+      constructor(element, text, speed = 100) {
+        this.element = element;
+        this.text = text;
+        this.speed = speed;
+        this.index = 0;
+      }
+      
+      async type() {
+        return new Promise((resolve) => {
+          const timer = setInterval(() => {
+            if (this.index < this.text.length) {
+              this.element.textContent += this.text.charAt(this.index);
+              this.index++;
+            } else {
+              clearInterval(timer);
+              // Remove cursor after typing
+              setTimeout(() => {
+                this.element.classList.remove('typing-cursor');
+                resolve();
+              }, 1000);
+            }
+          }, this.speed);
+        });
+      }
+    }
+    
+    // Particles Animation
+    class ParticleSystem {
+      constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.particles = [];
+        this.particleCount = window.innerWidth < 768 ? 30 : 50;
+        
+        this.resizeCanvas();
+        this.createParticles();
+        this.animate();
+        
+        window.addEventListener('resize', () => this.resizeCanvas());
+      }
+      
+      resizeCanvas() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+      }
+      
+      createParticles() {
+        for (let i = 0; i < this.particleCount; i++) {
+          this.particles.push({
+            x: Math.random() * this.canvas.width,
+            y: Math.random() * this.canvas.height,
+            size: Math.random() * 4 + 2,
+            speedX: (Math.random() - 0.5) * 0.5,
+            speedY: Math.random() * 1 + 0.5,
+            opacity: Math.random() * 0.8 + 0.2,
+            color: `hsl(${Math.random() * 60 + 300}, 70%, 80%)` // Pink to purple hues
+          });
+        }
+      }
+      
+      updateParticles() {
+        this.particles.forEach(particle => {
+          particle.x += particle.speedX;
+          particle.y += particle.speedY;
+          
+          // Reset particle when it goes off screen
+          if (particle.y > this.canvas.height) {
+            particle.y = -10;
+            particle.x = Math.random() * this.canvas.width;
+          }
+          
+          if (particle.x < 0 || particle.x > this.canvas.width) {
+            particle.speedX *= -1;
+          }
+        });
+      }
+      
+      drawParticles() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        this.particles.forEach(particle => {
+          this.ctx.save();
+          this.ctx.globalAlpha = particle.opacity;
+          this.ctx.fillStyle = particle.color;
+          this.ctx.beginPath();
+          this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+          this.ctx.fill();
+          this.ctx.restore();
+        });
+      }
+      
+      animate() {
+        this.updateParticles();
+        this.drawParticles();
+        requestAnimationFrame(() => this.animate());
+      }
+    }
+    
+    // Scroll to next section
+    function scrollToNextSection() {
+      document.getElementById('next-section').scrollIntoView({
+        behavior: 'smooth'
+      });
+    }
+    
+    // Initialize everything when DOM is loaded
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Initialize particle system
+      const canvas = document.getElementById('particles');
+      new ParticleSystem(canvas);
+      
+      // GSAP timeline for entrance animations
+      const tl = gsap.timeline();
+      
+      // Show main title first
+      tl.to('#main-title', {
+        opacity: 1,
+        duration: 0.5,
+        ease: 'power2.out'
+      });
+      
+      // Start typewriter effect
+      const titleElement = document.getElementById('main-title');
+      const typewriter = new TypeWriter(titleElement, 'Bem-vindo ao Cantinho Nya', 80);
+      
+      await typewriter.type();
+      
+      // Animate other elements after typewriter finishes
+      tl.to('#subtitle', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power2.out'
+      })
+      .to('#decorative-elements', {
+        opacity: 1,
+        scale: 1,
+        duration: 0.6,
+        ease: 'back.out(1.7)'
+      }, '-=0.3')
+      .to('#cta-button', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power2.out'
+      }, '-=0.2');
+      
+      // Add floating animation to title
+      gsap.to('#main-title', {
+        y: -10,
+        duration: 3,
+        ease: 'power1.inOut',
+        yoyo: true,
+        repeat: -1
+      });
+      
+      // Add subtle rotation to decorative elements
+      gsap.to('#decorative-elements span', {
+        rotation: 360,
+        duration: 10,
+        ease: 'none',
+        repeat: -1
+      });
+    });
+    
+    // Add parallax effect on scroll
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const parallax = document.getElementById('particles');
+      const speed = scrolled * 0.5;
+      
+      parallax.style.transform = `translateY(${speed}px)`;
+    });
+  </script>
+</body>
 </html>
