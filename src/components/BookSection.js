@@ -4,21 +4,21 @@ import { gsap } from "gsap";
 const livros = [
   {
     titulo: "Helena",
-    capa: "/public/images/HelenaLivro.jpg",
+    capa: "/images/HelenaLivro.jpg",
     trecho: "“A felicidade é como a pluma que o vento vai levando pelo ar...”",
     destaque: true,
     cor: "#fbcfe8",
   },
   {
     titulo: "Esaú e Jacó",
-    capa: "/public/images/EsauJaco.jpg",
+    capa: "/images/EsauJaco.jpg",
     trecho: "“Tudo é incerto neste mundo, e a harmonia é uma esperança.”",
     destaque: true,
     cor: "#fbcfe8",
   },
   {
     titulo: "O Quinze",
-    capa: "/public/images/OQuinze.jpg",
+    capa: "/images/OQuinze.jpg",
     trecho: "“A seca é uma personagem viva, que entra, impera e destrói.”",
     destaque: true,
     cor: "#fbcfe8",
