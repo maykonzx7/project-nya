@@ -1,1 +1,0 @@
-// MusicSection component

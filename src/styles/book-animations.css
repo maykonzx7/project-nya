@@ -1,104 +1,67 @@
-/* book-animations.css */
-@keyframes flip {
-  0% {
-    transform: rotateY(0deg);
-  }
-  100% {
-    transform: rotateY(180deg);
-  }
+/* Adicionar ao arquivo CSS existente */
+.book-card {
+  perspective: 1500px;
+  transition: z-index 0.8s step-end;
 }
 
-.book-card {
-  perspective: 1000px;
-  transition: transform 0.3s ease;
+.book-3d-container {
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.book-front, .book-back {
+  backface-visibility: hidden;
   transform-style: preserve-3d;
 }
 
-.book-cover {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.book-card:hover:not(.flipped) {
-  transform: translateY(-10px) rotateZ(2deg);
-}
-
-/* Efeito de levantamento */
-@keyframes book-float {
-  0%, 100% { transform: translateY(0) rotateZ(0); }
-  50% { transform: translateY(-10px) rotateZ(1deg); }
-}
-
-.book-card:not(.flipped) {
-  animation: book-float 4s ease-in-out infinite;
-}
-
-.book-card:nth-child(odd):not(.flipped) {
-  animation-delay: 0.5s;
-}
-
-/* Melhorias específicas */
-.book-front, .book-back {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
 .book-back {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  transform: rotateY(180deg);
 }
 
-.flip-btn, .flip-back-btn {
-  z-index: 30;
+.flip-btn {
+  animation: pulse-star 2s infinite;
+  cursor: pointer;
+  transition: transform 0.3s;
   outline: none;
 }
 
-/* Estilo para título sobreposto */
-.book-front h3 {
-  position: absolute;
-  bottom: 20px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  padding: 0 15px;
+.flip-btn:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
 }
 
-/* Efeito de sombra na capa */
-.book-front {
-  box-shadow: 0 15px 35px rgba(219, 39, 119, 0.15);
-  transition: box-shadow 0.3s ease;
+.flip-btn:hover {
+  transform: scale(1.1) rotate(15deg);
+  animation: none;
 }
 
-.book-card:hover:not(.flipped) .book-front {
-  box-shadow: 0 20px 40px rgba(219, 39, 119, 0.25);
-}
-/* Adicione estas animações */
-@keyframes ping-slow {
-  0% { transform: scale(1); opacity: 1; }
-  100% { transform: scale(2); opacity: 0; }
+.bg-paper-texture {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC45Ii8+PHBhdGggZD0iTTAgMEwxMDAgMTAwIiBzdHJva2U9IiNmZmQ3ZDciIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2Utb3BhY2l0eT0iMC4zIi8+PC9zdmc+');
 }
 
-@keyframes ping-slower {
-  0% { transform: scale(1); opacity: 0.7; }
-  100% { transform: scale(3); opacity: 0; }
+@keyframes pulse-star {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
-.animate-ping-slow {
-  animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+/* Melhorias de acessibilidade */
+.flip-back-btn:focus-visible {
+  outline: 2px solid #e11d48;
+  outline-offset: 2px;
 }
 
-.animate-ping-slower {
-  animation: ping-slower 4s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.animate-spin {
-  animation: spin 1s linear infinite;
+/* Otimização para mobile */
+@media (max-width: 640px) {
+  .book-card {
+    width: 280px !important;
+    height: 380px !important;
+  }
+  
+  .flip-btn {
+    width: 14px;
+    height: 14px;
+    right: -7px;
+    top: -7px;
+  }
 }
