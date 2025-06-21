@@ -28,16 +28,17 @@ const livros = [
 
 // Função auxiliar para fechar todos os livros abertos
 function closeAllBooks() {
-  document.querySelectorAll('.book-card.flipped').forEach(card => {
-    card.classList.remove('flipped');
+  document.querySelectorAll(".book-card.flipped").forEach((card) => {
+    card.classList.remove("flipped");
   });
 }
 
 export function renderBookSection(containerId = "book-section") {
-  const container = document.getElementById(containerId) || document.createElement("section");
+  const container =
+    document.getElementById(containerId) || document.createElement("section");
   container.id = containerId;
   container.className = "py-16 bg-white flex flex-col items-center";
-  
+
   if (!document.getElementById(containerId)) {
     document.body.appendChild(container);
   }
@@ -53,7 +54,9 @@ export function renderBookSection(containerId = "book-section") {
       </h2>
       
       <div class="flex flex-wrap justify-center gap-10 relative z-20">
-        ${livros.map((livro, idx) => `
+        ${livros
+          .map(
+            (livro, idx) => `
           <div class="book-card w-64 h-96 relative" 
                data-id="${idx}"
                aria-label="Livro ${livro.titulo}">
@@ -109,7 +112,9 @@ export function renderBookSection(containerId = "book-section") {
               </div>
             </div>
           </div>
-        `).join("")}
+        `
+          )
+          .join("")}
       </div>
     </div>
   `;
@@ -120,43 +125,43 @@ export function renderBookSection(containerId = "book-section") {
 
 function setupBookEvents(container) {
   let hoverTimeout;
-  const flipButtons = container.querySelectorAll('.flip-btn');
-  const flipBackButtons = container.querySelectorAll('.flip-back-btn');
-  const bookCards = container.querySelectorAll('.book-card');
+  const flipButtons = container.querySelectorAll(".flip-btn");
+  const flipBackButtons = container.querySelectorAll(".flip-back-btn");
+  const bookCards = container.querySelectorAll(".book-card");
 
   const flipBook = (card, show) => {
-    gsap.to(card.querySelector('.book-3d-container'), {
+    gsap.to(card.querySelector(".book-3d-container"), {
       rotationY: show ? 180 : 0,
       duration: 0.8,
       ease: "power3.out",
       onStart: () => {
         if (show) {
-          card.classList.add('flipped');
+          card.classList.add("flipped");
           card.style.zIndex = "10";
         }
       },
       onComplete: () => {
         if (!show) {
-          card.classList.remove('flipped');
+          card.classList.remove("flipped");
           card.style.zIndex = "";
         }
-      }
+      },
     });
   };
 
   // Eventos para botões de flip
-  flipButtons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
+  flipButtons.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
       e.stopPropagation(); // Impede propagação para o card
-      const card = btn.closest('.book-card');
+      const card = btn.closest(".book-card");
       closeAllBooks();
       flipBook(card, true);
     });
-    
-    btn.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
+
+    btn.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
-        const card = btn.closest('.book-card');
+        const card = btn.closest(".book-card");
         closeAllBooks();
         flipBook(card, true);
       }
@@ -164,32 +169,32 @@ function setupBookEvents(container) {
   });
 
   // Eventos para botões de voltar
-  flipBackButtons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
+  flipBackButtons.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
       e.stopPropagation(); // Impede propagação para o card
-      const card = btn.closest('.book-card');
+      const card = btn.closest(".book-card");
       flipBook(card, false);
     });
-    
-    btn.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
+
+    btn.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
-        const card = btn.closest('.book-card');
+        const card = btn.closest(".book-card");
         flipBook(card, false);
       }
     });
   });
 
   // Evento de clique no card principal
-  bookCards.forEach(card => {
-    card.addEventListener('click', function(e) {
+  bookCards.forEach((card) => {
+    card.addEventListener("click", function (e) {
       // Ignora cliques nos botões específicos
-      if (e.target.closest('.flip-btn') || e.target.closest('.flip-back-btn')) {
+      if (e.target.closest(".flip-btn") || e.target.closest(".flip-back-btn")) {
         return;
       }
-      
+
       // Alterna estado do card
-      if (card.classList.contains('flipped')) {
+      if (card.classList.contains("flipped")) {
         flipBook(card, false);
       } else {
         closeAllBooks();
@@ -199,36 +204,34 @@ function setupBookEvents(container) {
   });
 
   // Fechar ao clicar fora
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.book-card')) {
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".book-card")) {
       closeAllBooks();
     }
   });
 
   // Efeito hover (mantido)
-  bookCards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
+  bookCards.forEach((card) => {
+    card.addEventListener("mouseenter", () => {
       clearTimeout(hoverTimeout);
-      if (!card.classList.contains('flipped')) {
+      if (!card.classList.contains("flipped")) {
         hoverTimeout = setTimeout(() => {
           gsap.to(card, {
             y: -15,
             duration: 0.5,
-            ease: "power2.out"
+            ease: "power2.out",
           });
         }, 50);
       }
     });
-    
-    card.addEventListener('mouseleave', () => {
+
+    card.addEventListener("mouseleave", () => {
       clearTimeout(hoverTimeout);
       gsap.to(card, {
         y: 0,
         duration: 0.7,
-        ease: "elastic.out(1, 0.5)"
+        ease: "elastic.out(1, 0.5)",
       });
     });
   });
 }
-
-document.addEventListener("DOMContentLoaded", renderBookSection);
