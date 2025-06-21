@@ -1,33 +1,42 @@
 # 🌸 Cantinho da Nyiii
 
-Um site pessoal nostálgico e interativo que combina design minimalista, animações suaves e uma paleta de cores acolhedora. Apresenta seções dinâmicas que contam uma história através de livros, músicas e memórias.
+Bem-vindo ao **Cantinho da Nyiii**! Um site pessoal feito com carinho, nostalgia e muita animação, celebrando literatura, infância e memórias especiais.
 
-## ✨ Funcionalidades Principais
+## ✨ O que tem aqui?
+- **Seção Hero** com animação de partículas e efeito typewriter
+- **Livros favoritos** com cards animados
+- **Nostalgia da infância** (Cocoricó, Castelo Rá-Tim-Bum, etc.)
+- **Rodapé estiloso** com créditos
+- Visual moderno, responsivo e cheio de detalhes fofos
 
-- 🎨 **Hero Section** - Banner inicial com efeito de partículas e título animado
-- 📚 **Seção de Livros** - Cards interativos com animação de folhear e bookmarks
-- 🎵 **Seção Musical** - Carrossel de álbuns com integração Spotify
-- 👧 **Seção Infância** - Galeria de memórias com efeitos visuais
-- 🔄 **Navegação Suave** - Transições fluidas entre seções
-- 📱 **Design Responsivo** - Experiência otimizada em todos os dispositivos
+## 🛠️ Tecnologias e libs usadas
+- [Vite](https://vitejs.dev/) — build ultra rápido
+- [TailwindCSS](https://tailwindcss.com/) — estilização moderna
+- [GSAP](https://greensock.com/gsap/) — animações suaves
+- [Typed.js](https://mattboldt.com/demos/typed-js/) — efeito máquina de escrever
+- [AOS](https://michalsnik.github.io/aos/) — animações on scroll
+- [Swiper](https://swiperjs.com/) — carrossel (se usar)
+- [GLightbox](https://biati-digital.github.io/glightbox/) — lightbox para imagens (se usar)
 
-## 🚀 Stack Tecnológica
+## 📁 Estrutura principal
+- `index.html` — página principal
+- `src/` — código fonte
+  - `components/` — seções reutilizáveis (Hero, BookSection, ChildhoodSection, Footer)
+  - `animations/` — animações customizadas (partículas, typewriter)
+  - `styles/` — estilos customizados
+  - `utils/` — helpers
+- `public/` — imagens e áudios
 
-### Core
+## 🚀 Como rodar
+1. Instale as dependências:
+   ```bash
+   npm install
+   ```
+2. Rode o projeto:
+   ```bash
+   npm run dev
+   ```
+3. Acesse em [http://localhost:5173](http://localhost:5173)
 
-- **Vite** - Build tool rápido e moderno
-- **Vanilla JavaScript** - Controle total e performance
-- **Tailwind CSS** - Estilização utilitária + CSS custom
+---
 
-### Animações & Efeitos
-
-- **GSAP** - Animações profissionais e scroll suave
-- **AOS** - Animações ao scroll
-- **Typed.js** - Efeito de digitação no hero
-- **ParticlesJS** - Efeito de partículas interativas
-
-### Interatividade
-
-- **Swiper.js** - Carrossel de álbuns responsivo
-- **GLightbox** - Galeria de imagens e modal
-- **Spotify Web Playback SDK** - Integração com player de música
